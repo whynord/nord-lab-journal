@@ -59,7 +59,7 @@ export function PostEditor({
             required
             value={values.title}
             onChange={(e) => set("title", e.target.value)}
-            className="mt-2 w-full bg-background border border-border px-3 py-2 text-2xl font-display uppercase tracking-tight focus:outline-none focus:border-neon"
+            className="mt-2 w-full bg-background border border-border px-3 py-2 text-2xl font-display focus:outline-none focus:border-neon"
             placeholder="What are we transmitting?"
           />
         </div>
