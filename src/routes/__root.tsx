@@ -140,7 +140,7 @@ function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-sm">
       <div className="max-w-[1400px] mx-auto px-6 h-14 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3 group">
-          <span className="text-display text-2xl tracking-tight">FREQ<span className="text-neon">◉</span></span>
+          <span className="text-display text-2xl tracking-tight">NORD<span className="text-neon">◉</span></span>
           <span className="text-mono-xs text-muted-foreground hidden sm:inline">
             • <span className="text-neon">LIVE</span> // TUNING THAT FREQUENCY
           </span>
@@ -149,6 +149,22 @@ function Header() {
           <Link to="/" className="text-mono-xs text-muted-foreground hover:text-neon transition-colors">
             [ ARCHIVE ]
           </Link>
+          <a
+            href="https://whynord.net"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-mono-xs text-muted-foreground hover:text-neon transition-colors"
+          >
+            [ WHYNORD.NET ]
+          </a>
+          <a
+            href="https://about.whynord.net"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-mono-xs text-muted-foreground hover:text-neon transition-colors"
+          >
+            [ ABOUT ME ]
+          </a>
           {email ? (
             <>
               <Link to="/admin" className="text-mono-xs text-muted-foreground hover:text-neon transition-colors">
