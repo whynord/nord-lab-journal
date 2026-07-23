@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Link } from "@tanstack/react-router";
 import { slugify, type Post } from "@/lib/posts";
+import { cn } from "@/lib/utils";
 
 export type PostFormValues = {
   title: string;
@@ -42,6 +43,10 @@ export function PostEditor({
 
   const set = <K extends keyof PostFormValues>(k: K, v: PostFormValues[K]) =>
     setValues((prev) => ({ ...prev, [k]: v }));
+
+  const hasThai = /[\u0E00-\u0E7F]/.test(
+    `${values.title} ${values.excerpt} ${values.content}`
+  );
 
   return (
     <form
@@ -162,7 +167,7 @@ export function PostEditor({
         {values.cover_url && (
           <img src={values.cover_url} alt="" className="mt-4 w-full border border-border" />
         )}
-        <div className="mt-6 prose-blog">
+        <div className={cn("mt-6 prose-blog", hasThai && "thai")}>
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {values.content || "*Nothing yet.*"}
           </ReactMarkdown>
