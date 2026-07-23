@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getPostBySlug } from "@/lib/posts";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/post/$slug")({
   component: PostPage,
