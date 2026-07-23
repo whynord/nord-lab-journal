@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getPostBySlug } from "@/lib/posts";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/post/$slug")({
   component: PostPage,
@@ -43,6 +44,10 @@ function PostPage() {
     ? new Date(post.published_at).toISOString().slice(0, 10).replace(/-/g, ".")
     : "";
 
+  const hasThai = /[\u0E00-\u0E7F]/.test(
+    `${post.title} ${post.excerpt ?? ""} ${post.content}`
+  );
+
   return (
     <article className="grid-bg">
       <div className="max-w-[900px] mx-auto px-6 pt-16 pb-24">
@@ -73,7 +78,7 @@ function PostPage() {
           />
         )}
 
-        <div className="mt-10 prose-blog">
+        <div className={cn("mt-10 prose-blog", hasThai && "thai")}>
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
         </div>
 

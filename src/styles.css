@@ -213,3 +213,17 @@
   border-top: 1px dashed var(--border);
   margin: 2.5em 0;
 }
+
+/* Thai paragraphs need a larger size for comfortable reading */
+.prose-blog.thai,
+.prose-blog-thai {
+  font-size: 17px;
+  line-height: 1.85;
+}
+.prose-blog.thai p,
+.prose-blog-thai p,
+.prose-blog.thai li,
+.prose-blog-thai li {
+  font-size: 17px;
+  line-height: 1.85;
+}
