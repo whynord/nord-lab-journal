@@ -70,6 +70,22 @@ function PostPage() {
           </p>
         )}
 
+        {post.tags && post.tags.length > 0 && (
+          <div className="mt-6 flex flex-wrap gap-2">
+            {post.tags.map((t) => (
+              <Link
+                key={t}
+                to="/tag/$tag"
+                params={{ tag: t }}
+                className="text-mono-xs border border-border px-2.5 py-1 text-muted-foreground hover:border-neon hover:text-neon transition-colors"
+              >
+                #{t}
+              </Link>
+            ))}
+          </div>
+        )}
+
+
         {post.cover_url && (
           <img
             src={post.cover_url}
