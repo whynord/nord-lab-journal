@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Link } from "@tanstack/react-router";
-import { slugify, type Post } from "@/lib/posts";
+import { slugify, parseTags, type Post } from "@/lib/posts";
 import { cn } from "@/lib/utils";
 
 export type PostFormValues = {
@@ -11,8 +11,10 @@ export type PostFormValues = {
   excerpt: string;
   content: string;
   cover_url: string;
+  tags: string[];
   published: boolean;
 };
+
 
 export function PostEditor({
   initial,
@@ -33,9 +35,12 @@ export function PostEditor({
     excerpt: initial?.excerpt ?? "",
     content: initial?.content ?? "",
     cover_url: initial?.cover_url ?? "",
+    tags: initial?.tags ?? [],
     published: initial?.published ?? false,
   });
+  const [tagsInput, setTagsInput] = useState((initial?.tags ?? []).join(", "));
   const [autoSlug, setAutoSlug] = useState(!initial);
+
 
   useEffect(() => {
     if (autoSlug) setValues((v) => ({ ...v, slug: slugify(v.title) }));
