@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { listPublishedPosts } from "@/lib/posts";
+import { listPublishedPosts, listAllPublishedTags } from "@/lib/posts";
+
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -17,6 +18,11 @@ function Home() {
     queryKey: ["posts", "published"],
     queryFn: listPublishedPosts,
   });
+  const { data: tags } = useQuery({
+    queryKey: ["tags", "published"],
+    queryFn: listAllPublishedTags,
+  });
+
 
   return (
     <div className="grid-bg">
