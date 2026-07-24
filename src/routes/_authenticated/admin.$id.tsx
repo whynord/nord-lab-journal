@@ -30,8 +30,10 @@ function EditPost() {
         excerpt: v.excerpt || null,
         content: v.content,
         cover_url: v.cover_url || null,
+        tags: v.tags,
         published: v.published,
       };
+
       // Set published_at first time it goes live
       if (v.published && !post?.published_at) {
         patch.published_at = new Date().toISOString();

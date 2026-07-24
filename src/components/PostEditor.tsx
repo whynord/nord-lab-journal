@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Link } from "@tanstack/react-router";
-import { slugify, type Post } from "@/lib/posts";
+import { slugify, parseTags, type Post } from "@/lib/posts";
 import { cn } from "@/lib/utils";
 
 export type PostFormValues = {
@@ -11,8 +11,10 @@ export type PostFormValues = {
   excerpt: string;
   content: string;
   cover_url: string;
+  tags: string[];
   published: boolean;
 };
+
 
 export function PostEditor({
   initial,
@@ -33,9 +35,12 @@ export function PostEditor({
     excerpt: initial?.excerpt ?? "",
     content: initial?.content ?? "",
     cover_url: initial?.cover_url ?? "",
+    tags: initial?.tags ?? [],
     published: initial?.published ?? false,
   });
+  const [tagsInput, setTagsInput] = useState((initial?.tags ?? []).join(", "));
   const [autoSlug, setAutoSlug] = useState(!initial);
+
 
   useEffect(() => {
     if (autoSlug) setValues((v) => ({ ...v, slug: slugify(v.title) }));
@@ -111,6 +116,34 @@ export function PostEditor({
         </div>
 
         <div>
+          <label className="text-mono-xs text-neon">$ tags</label>
+          <input
+            value={tagsInput}
+            onChange={(e) => {
+              setTagsInput(e.target.value);
+              set("tags", parseTags(e.target.value));
+            }}
+            className="mt-2 w-full bg-background border border-border px-3 py-2 text-sm font-mono focus:outline-none focus:border-neon"
+            placeholder="thai, radio, essay"
+          />
+          <div className="mt-2 text-mono-xs text-muted-foreground">
+            comma-separated; normalized to lowercase-hyphen.
+          </div>
+          {values.tags.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {values.tags.map((t) => (
+                <span
+                  key={t}
+                  className="text-mono-xs border border-neon/40 text-neon px-2 py-0.5"
+                >
+                  #{t}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div>
           <label className="text-mono-xs text-neon">$ content.md</label>
           <textarea
             required
@@ -121,6 +154,7 @@ export function PostEditor({
             placeholder="# Write in markdown…"
           />
         </div>
+
 
         <div className="flex items-center justify-between border border-border p-3">
           <label className="flex items-center gap-3 text-mono-xs">

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { listPublishedPosts } from "@/lib/posts";
+import { listPublishedPosts, listAllPublishedTags } from "@/lib/posts";
+
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -17,6 +18,11 @@ function Home() {
     queryKey: ["posts", "published"],
     queryFn: listPublishedPosts,
   });
+  const { data: tags } = useQuery({
+    queryKey: ["tags", "published"],
+    queryFn: listAllPublishedTags,
+  });
+
 
   return (
     <div className="grid-bg">
@@ -56,6 +62,32 @@ function Home() {
         </div>
       </section>
 
+      {/* TAG CLOUD */}
+      {tags && tags.length > 0 && (
+        <section className="max-w-[1400px] mx-auto px-6 pt-16">
+          <div className="flex items-baseline justify-between border-b border-border pb-4 mb-6">
+            <h2 className="text-display text-2xl md:text-3xl">
+              <span className="text-neon">//</span> TAGS
+            </h2>
+            <span className="text-mono-xs text-muted-foreground">
+              {tags.length} FREQUENCIES
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {tags.map(({ tag, count }) => (
+              <Link
+                key={tag}
+                to="/tag/$tag"
+                params={{ tag }}
+                className="text-mono-xs border border-border px-3 py-1.5 hover:border-neon hover:text-neon transition-colors"
+              >
+                #{tag} <span className="text-muted-foreground">({count})</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* ARCHIVE */}
       <section className="max-w-[1400px] mx-auto px-6 py-20">
         <div className="flex items-baseline justify-between border-b border-border pb-4 mb-10">
@@ -83,11 +115,11 @@ function Home() {
 
         <ul className="divide-y divide-border">
           {posts?.map((p, i) => (
-            <li key={p.id}>
+            <li key={p.id} className="group py-6 hover:bg-card/40 transition-colors -mx-3 px-3">
               <Link
                 to="/post/$slug"
                 params={{ slug: p.slug }}
-                className="group grid grid-cols-12 gap-4 py-6 items-start hover:bg-card/40 transition-colors -mx-3 px-3"
+                className="grid grid-cols-12 gap-4 items-start"
               >
                 <div className="col-span-12 md:col-span-2 flex items-center gap-3">
                   <span className="text-mono-xs text-neon">
@@ -113,6 +145,20 @@ function Home() {
                   </span>
                 </div>
               </Link>
+              {p.tags && p.tags.length > 0 && (
+                <div className="mt-3 md:ml-[16.6667%] flex flex-wrap gap-1.5">
+                  {p.tags.map((t) => (
+                    <Link
+                      key={t}
+                      to="/tag/$tag"
+                      params={{ tag: t }}
+                      className="text-mono-xs border border-border px-2 py-0.5 text-muted-foreground hover:border-neon hover:text-neon transition-colors"
+                    >
+                      #{t}
+                    </Link>
+                  ))}
+                </div>
+              )}
             </li>
           ))}
         </ul>
@@ -120,3 +166,4 @@ function Home() {
     </div>
   );
 }
+

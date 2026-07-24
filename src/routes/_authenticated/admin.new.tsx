@@ -23,10 +23,12 @@ function NewPost() {
         excerpt: v.excerpt || null,
         content: v.content,
         cover_url: v.cover_url || null,
+        tags: v.tags,
         published: v.published,
         published_at: v.published ? new Date().toISOString() : null,
         author_id: userData.user?.id ?? null,
       };
+
       const { data, error } = await supabase.from("posts").insert(payload).select().single();
       if (error) throw error;
       router.navigate({ to: "/admin/$id", params: { id: data.id } });
