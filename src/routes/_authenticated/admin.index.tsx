@@ -80,6 +80,13 @@ function AdminList() {
               >
                 {p.published ? "UNPUBLISH" : "PUBLISH"}
               </button>
+              <Link
+                to="/admin/preview/$id"
+                params={{ id: p.id }}
+                className="text-mono-xs border border-border px-3 py-1.5 hover:border-neon hover:text-neon transition-colors"
+              >
+                PREVIEW
+              </Link>
               {p.published && (
                 <Link
                   to="/post/$slug"
@@ -89,6 +96,7 @@ function AdminList() {
                   VIEW ↗
                 </Link>
               )}
+
               <Link
                 to="/admin/$id"
                 params={{ id: p.id }}
