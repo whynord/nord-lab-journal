@@ -217,13 +217,14 @@
 /* Thai paragraphs need a larger size for comfortable reading */
 .prose-blog.thai,
 .prose-blog-thai {
-  font-size: 17px;
-  line-height: 1.85;
+  font-size: 20px;
+  line-height: 2;
 }
 .prose-blog.thai p,
 .prose-blog-thai p,
 .prose-blog.thai li,
 .prose-blog-thai li {
-  font-size: 17px;
-  line-height: 1.85;
+  font-size: 20px;
+  line-height: 2;
 }
+

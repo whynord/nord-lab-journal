@@ -132,37 +132,32 @@ function Clock() {
 function Header() {
   const email = useSession();
   const router = useRouter();
+  const [open, setOpen] = useState(false);
   const signOut = async () => {
     await supabase.auth.signOut();
+    setOpen(false);
     router.navigate({ to: "/" });
   };
+  const close = () => setOpen(false);
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-sm">
-      <div className="max-w-[1400px] mx-auto px-6 h-14 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3 group">
+      <div className="max-w-[1400px] mx-auto px-6 h-14 flex items-center justify-between gap-4">
+        <Link to="/" onClick={close} className="flex min-w-0 items-center gap-3 group">
           <span className="text-display text-2xl tracking-tight">NORD</span>
-          <span className="text-mono-xs text-muted-foreground hidden sm:inline">
+          <span className="text-mono-xs text-muted-foreground hidden sm:inline truncate">
             <span className="text-neon animate-pulse">•</span> <span className="text-neon">LIVE</span> // TUNING THAT FREQUENCY
           </span>
         </Link>
-        <nav className="flex items-center gap-6">
+
+        {/* Desktop nav */}
+        <nav className="hidden md:flex items-center gap-6">
           <Link to="/" className="text-mono-xs text-muted-foreground hover:text-neon transition-colors">
             [ ARCHIVE ]
           </Link>
-          <a
-            href="https://whynord.net"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-mono-xs text-muted-foreground hover:text-neon transition-colors"
-          >
+          <a href="https://whynord.net" target="_blank" rel="noopener noreferrer" className="text-mono-xs text-muted-foreground hover:text-neon transition-colors">
             [ WHYNORD.NET ]
           </a>
-          <a
-            href="https://about.whynord.net"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-mono-xs text-muted-foreground hover:text-neon transition-colors"
-          >
+          <a href="https://about.whynord.net" target="_blank" rel="noopener noreferrer" className="text-mono-xs text-muted-foreground hover:text-neon transition-colors">
             [ ABOUT ME ]
           </a>
           {email ? (
@@ -170,27 +165,62 @@ function Header() {
               <Link to="/admin" className="text-mono-xs text-muted-foreground hover:text-neon transition-colors">
                 [ ADMIN ]
               </Link>
-              <button
-                onClick={signOut}
-                className="text-mono-xs bg-neon text-background px-3 py-1.5 hover:bg-neon-dim transition-colors"
-              >
+              <button onClick={signOut} className="text-mono-xs bg-neon text-background px-3 py-1.5 hover:bg-neon-dim transition-colors">
                 SIGN OUT ↗
               </button>
             </>
           ) : (
-            <Link
-              to="/auth"
-              className="text-mono-xs bg-neon text-background px-3 py-1.5 hover:bg-neon-dim transition-colors"
-            >
+            <Link to="/auth" className="text-mono-xs bg-neon text-background px-3 py-1.5 hover:bg-neon-dim transition-colors">
               SIGN IN ↗
             </Link>
           )}
           <Clock />
         </nav>
+
+        {/* Mobile hamburger */}
+        <button
+          onClick={() => setOpen((v) => !v)}
+          aria-label="Toggle menu"
+          aria-expanded={open}
+          className="md:hidden shrink-0 border border-border p-2 text-neon hover:bg-neon hover:text-background transition-colors"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            {open ? (
+              <><line x1="6" y1="6" x2="18" y2="18" /><line x1="6" y1="18" x2="18" y2="6" /></>
+            ) : (
+              <><line x1="3" y1="7" x2="21" y2="7" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="17" x2="21" y2="17" /></>
+            )}
+          </svg>
+        </button>
       </div>
+
+      {/* Mobile menu panel */}
+      {open && (
+        <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-sm">
+          <nav className="max-w-[1400px] mx-auto px-6 py-4 flex flex-col gap-3">
+            <Link to="/" onClick={close} className="text-mono-xs text-muted-foreground hover:text-neon">[ ARCHIVE ]</Link>
+            <a href="https://whynord.net" target="_blank" rel="noopener noreferrer" onClick={close} className="text-mono-xs text-muted-foreground hover:text-neon">[ WHYNORD.NET ]</a>
+            <a href="https://about.whynord.net" target="_blank" rel="noopener noreferrer" onClick={close} className="text-mono-xs text-muted-foreground hover:text-neon">[ ABOUT ME ]</a>
+            {email ? (
+              <>
+                <Link to="/admin" onClick={close} className="text-mono-xs text-muted-foreground hover:text-neon">[ ADMIN ]</Link>
+                <button onClick={signOut} className="text-mono-xs bg-neon text-background px-3 py-2 hover:bg-neon-dim transition-colors self-start">
+                  SIGN OUT ↗
+                </button>
+              </>
+            ) : (
+              <Link to="/auth" onClick={close} className="text-mono-xs bg-neon text-background px-3 py-2 hover:bg-neon-dim transition-colors self-start">
+                SIGN IN ↗
+              </Link>
+            )}
+            <div className="pt-2 border-t border-border"><Clock /></div>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
+
 
 function Footer() {
   return (
